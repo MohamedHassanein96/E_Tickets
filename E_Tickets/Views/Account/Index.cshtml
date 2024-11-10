@@ -1,0 +1,17 @@
+﻿@using E_TicketsCore.Models
+@model IEnumerable<ApplicationUser>
+
+<h1>User List</h1>
+<table>
+    <tr>
+        <th>Email</th>
+        <th>Username</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.UserName</td>
+        </tr>
+    }
+</table>

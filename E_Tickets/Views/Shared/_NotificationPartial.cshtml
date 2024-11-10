@@ -1,0 +1,12 @@
+﻿
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Toastr Notification on Success
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success('@TempData["success"]');</text>
+        }
+                });
+    </script>
+}

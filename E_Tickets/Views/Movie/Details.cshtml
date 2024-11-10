@@ -1,0 +1,143 @@
+﻿@using E_TicketsCore.Models
+@model E_TicketsCore.Models.Movie
+
+<h1>@Html.DisplayFor(model => model.Name)</h1>
+
+<div class="row">
+    <!-- Image Section -->
+    <div class="col-sm-3">
+       <img src="@Url.Content("~/images/" + Model.ImgUrl)" alt="Image" class="img-fluid" />
+    </div>
+
+    <!-- Details Section -->
+    <div class="col-sm-9">
+        <h4>Movie Details</h4>
+        <dl class="row">
+           
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TrailerUrl)
+            </dt>
+            <dd class="col-sm-10">
+                <a href="@Model.TrailerUrl" target="_blank">
+                    @Html.DisplayFor(model => model.TrailerUrl)
+                </a>
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndDate)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TicketsCount)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TicketsCount)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Cinema)
+            </dt>
+
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Cinema.Name)
+            </dd>
+
+            <div class="row">
+                @foreach (var actorMovie in Model.ActorMovies)
+                {
+                    <div class="col-sm-3 text-center">
+                        <img src="@Url.Content("~/images/" + actorMovie.Actor.ProfilePicture)" alt="" class="img-fluid" />
+                    </div>
+                }
+            </div>
+
+    </div>
+
+
+        </dl>
+    </div>
+</div>
+
+<!-- Form Section -->
+<form asp-action="AddToCart" asp-controller="Cart" method="post" class="mt-4">
+    <input type="hidden" asp-for="Id" name="movieId" />
+
+    <div class="row d-flex mb-3">
+        <div class="col-8">
+            <input type="number" class="form-control" name="count" placeholder="Count..." required min="1" />
+        </div>
+        <div class="col-4">
+            @if (Model.Status == Movie.MovieStatus.Available)
+            {
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary" disabled>Not Available</button>
+            }
+        </div>
+    </div>
+</form>
+<script>
+    // Get the maximum count from the Model
+    const maxCount = @Model.TicketsCount;
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const count = parseInt(document.querySelector("input[name='count']").value, 10);
+
+        // Custom condition: Minimum value of 1, maximum value from TicketsCount
+        if (count < 1 || count > maxCount) {
+            e.preventDefault();
+            let message = `Invalid quantity entered: ${count}. `;
+            if (count < 1) {
+                message += `Please enter a quantity of at least 1.`;
+            } else {
+                message += `Please enter a quantity not exceeding ${maxCount}.`;
+            }
+            alert(message);
+        }
+    });
+</script>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

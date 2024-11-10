@@ -1,0 +1,73 @@
+﻿@section Script {
+    <script>
+            $(document).ready(function () {
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success('@TempData["success"]');</text>
+        }
+        });
+    </script>
+}
+
+
+@using E_TicketsCore.Models
+<div class="row">
+    <form action="/Home/Index">
+        <div class="row d-flex mb-3">
+            <div class="col-4">
+                <input type="text" class="form-control" name="query" placeholder="Search...">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 d-flex flex-row">
+
+                <img src="~/images/@item.ImgUrl" class="img-fluid" alt="Movie Image" style="width: 40%; object-fit: cover;">
+
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h5 class="card-title">Price: @item.Price</h5>
+                    <h5 class="card-title">Start Date: @item.StartDate.ToString("yyyy-MM-dd")</h5>
+                    <h5 class="card-title">End Date: @item.EndDate.ToString("yyyy-MM-dd")</h5>
+                    <h5 class="card-title">Category: @item.Category.Name</h5>
+
+                    @{
+                        DateTime currentDate = DateTime.Now;
+                        string movieStatus;
+                        if (currentDate < @item.StartDate)
+                        {
+                            movieStatus = Movie.MovieStatus.Upcoming.ToString();
+                        }
+                        else if (currentDate >= @item.StartDate && currentDate <= @item.EndDate)
+                        {
+                            movieStatus = Movie.MovieStatus.Available.ToString();
+                        }
+                        else
+                        {
+                            movieStatus = Movie.MovieStatus.NotAvailable.ToString();
+                        }
+                    }
+                    <h5 class="card-title">Status: @movieStatus</h5>
+
+                    <!-- Buttons -->
+                    <a href="/Movie/Details/@item.Id" class="btn btn-success mt-2">Show More</a>
+
+                    <a href="/Movie/Details/@item.Id"
+                       class="btn btn-warning mt-2 @(movieStatus == Movie.MovieStatus.Upcoming.ToString() || movieStatus == Movie.MovieStatus.NotAvailable.ToString() ? "disabled" : "")"
+                    @(movieStatus == Movie.MovieStatus.Upcoming.ToString() || movieStatus == Movie.MovieStatus.NotAvailable.ToString() ? "aria-disabled='true'" : "")
+                       style="pointer-events: @(movieStatus == Movie.MovieStatus.Upcoming.ToString() || movieStatus == Movie.MovieStatus.NotAvailable.ToString() ? "none" : "auto")">
+                        Book a Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

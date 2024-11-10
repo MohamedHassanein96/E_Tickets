@@ -1,0 +1,81 @@
+﻿@model E_TicketsCore.Models.Cinema
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Cinema</title>
+</head>
+<body>
+
+    <h4>Edit Cinema</h4>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Edit Cinema Form -->
+            <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Hidden field for Cinema ID -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Cinema Name Field -->
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Cinema Description Field -->
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Current Cinema Logo Preview -->
+                <div class="form-group">
+                    <label>Current Cinema Logo:</label><br />
+                    <img src="~/images/@Model.CinemaLogo" alt="Cinema Logo" style="width: 100px; height: auto;" />
+                </div>
+
+                <!-- Upload New Cinema Logo -->
+                <div class="form-group">
+                    <label>Upload New Cinema Logo:</label>
+                    <input type="file" name="newCinemaLogo" class="form-control-file" />
+                </div>
+
+                <!-- Cinema Address Field -->
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <!-- Save Button -->
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Back to List Link -->
+    <div>
+        <a asp-action="Index" class="btn btn-secondary mb-3">Back to List</a>
+    </div>
+
+    @section Scripts {
+        <!-- Validation Scripts -->
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+
+</body>
+</html>

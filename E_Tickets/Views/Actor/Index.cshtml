@@ -1,0 +1,83 @@
+﻿@section Script {
+    <script>
+        $(document).ready(function () {
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success('@TempData["success"]');</text>
+        }
+                });
+    </script>
+}
+
+
+@using E_TicketsCore.Models
+@model IEnumerable<Actor>
+
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Actor</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><label>First Name</label></th>
+            <th><label>Last Name</label></th>
+            <th><label>Profile Picture</label></th>
+            <th class="text-end"><label>Actions</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><span>@item.FirstName</span></td>
+                <td><span>@item.LastName</span></td>
+                <td>
+                    <img src="~/images/@item.ProfilePicture" alt="Profile Picture"
+                         class="img-thumbnail" style="width: 50px; height: 50px;" />
+                </td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteActorId(@item.Id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this actor?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function setDeleteActorId(id) {
+            // Set the Delete button's href in the modal with the correct actor ID
+            const deleteUrl = '@Url.Action("Delete", "Actor", new { id = "__id__" })'.replace("__id__", id);
+            document.getElementById("confirmDeleteBtn").setAttribute("href", deleteUrl);
+        }
+    </script>
+}
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
+</div>
+

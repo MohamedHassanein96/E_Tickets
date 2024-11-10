@@ -1,0 +1,61 @@
+﻿@model E_TicketsCore.Models.Actor
+
+<h1>Edit</h1>
+<h4>Actor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-controller="Actor" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Bio" class="control-label"></label>
+                <input asp-for="Bio" class="form-control" />
+                <span asp-validation-for="Bio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Current Profile Picture:</label><br />
+                <img src="~/images/@Model.ProfilePicture" alt="Image Preview" style="width: 100px;" />
+            </div>
+
+            <div class="form-group">
+                <label>Upload New Profile Picture:</label>
+                <input type="file" name="newProfilePicture" class="form-control-file" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="News" class="control-label"></label>
+                <input asp-for="News" class="form-control" />
+                <span asp-validation-for="News" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
